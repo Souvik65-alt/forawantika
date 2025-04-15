@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday 💖</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #ffe0f0, #ffe4e1);
+      font-family: 'Segoe UI', cursive;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      color: #ff1493;
+      margin-top: 30px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #333;
+      margin: 20px;
+      animation: fadeIn 3s ease-in-out;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .photo {
+      width: 200px;
+      height: 200px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transform: scale(0);
+      animation: pop 0.8s ease forwards;
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo:nth-child(1) { animation-delay: 0.5s; }
+    .photo:nth-child(2) { animation-delay: 1s; }
+    .photo:nth-child(3) { animation-delay: 1.5s; }
+    .photo:nth-child(4) { animation-delay: 2s; }
+    .photo:nth-child(5) { animation-delay: 2.5s; }
+
+    .secret-btn {
+      margin: 40px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+
+    .secret-btn:hover {
+      background-color: #ff1493;
+    }
+
+    #secret-msg {
+      display: none;
+      font-size: 1.3em;
+      color: #cc0066;
+      margin-top: 20px;
+      animation: fadeIn 2s;
+    }
+
+    @keyframes pop {
+      to {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎉 Happy Birthday to the Sweetest Person Ever! 🎂</h1>
+  <p>
+    Aaj tumhara din hai, toh sab kuch tumhare naam,<br>
+    Har khushi mile tumhe, har pal ho shaam-e-gulaam! 💐
+  </p>
+
+  <div class="gallery">
+    <!-- Replace these image URLs with your own -->
+    <div class="photo"><img src="https://source.unsplash.com/300x300/?girl,birthday" alt="pic1" /></div>
+    <div class="photo"><img src="https://source.unsplash.com/300x300/?flowers,smile" alt="pic2" /></div>
+    <div class="photo"><img src="https://source.unsplash.com/300x300/?cake,balloons" alt="pic3" /></div>
+    <div class="photo"><img src="https://source.unsplash.com/300x300/?sunset,happy" alt="pic4" /></div>
+    <div class="photo"><img src="https://source.unsplash.com/300x300/?birthday,party" alt="pic5" /></div>
+  </div>
+
+  <button class="secret-btn" onclick="revealMessage()">💌 Click for a secret</button>
+  <p id="secret-msg">Tumhari muskurahat mere liye duniya ki sabse khoobsurat cheez hai 😌💗</p>
+
+  <!-- Background Music -->
+  <audio autoplay loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Confetti Script -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    // Confetti burst on load
+    setTimeout(() => {
+      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    }, 1000);
+
+    function revealMessage() {
+      document.getElementById("secret-msg").style.display = "block";
+      confetti({ particleCount: 100, spread: 100 });
+    }
+  </script>
+</body>
+</html>
