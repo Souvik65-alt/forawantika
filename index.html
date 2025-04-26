@@ -9,20 +9,20 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- AOS (Animate On Scroll) -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <!-- Three.js (3D Effects) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     /* ========== BASE STYLES ========== */
     :root {
-      --primary: #FF6B8B;
-      --secondary: #FF8E53;
-      --dark: #2C3A47;
-      --darker: #1E2A3A;
-      --darkest: #0F1C2E;
-      --light: #ffffff;
-      --accent: #FFD166;
-      --gradient: linear-gradient(45deg, var(--primary), var(--secondary));
-      --gradient2: linear-gradient(45deg, #FF6B8B, #FF8E53, #FFD166);
+      --neon-red: #ff355e;
+      --deep-red: #d10047;
+      --rose-gold: #E0BFB8;
+      --soft-pink: #ffb8c6;
+      --gold: #FFD700;
+      --dark: #1a000d;
+      --darker: #120009;
+      --darkest: #0d0006;
+      --light: #FFF9FB;
+      --gradient: linear-gradient(45deg, var(--neon-red), var(--deep-red));
+      --gradient2: linear-gradient(45deg, var(--neon-red), var(--deep-red), var(--rose-gold));
     }
     
     * {
@@ -56,6 +56,7 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      text-shadow: 0 0 10px rgba(255, 53, 94, 0.3);
     }
 
     h2 {
@@ -72,6 +73,27 @@
       font-size: 1.2rem;
       max-width: 700px;
       margin-bottom: 2rem;
+    }
+
+    /* ========== NEON EFFECTS ========== */
+    .neon-text {
+      text-shadow: 0 0 5px var(--neon-red), 
+                   0 0 10px var(--neon-red),
+                   0 0 20px var(--neon-red),
+                   0 0 40px var(--deep-red);
+      animation: flicker 1.5s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow: 0 0 5px var(--neon-red), 
+                     0 0 10px var(--neon-red),
+                     0 0 20px var(--neon-red),
+                     0 0 40px var(--deep-red);
+      }
+      20%, 24%, 55% {        
+        text-shadow: none;
+      }
     }
 
     /* ========== LAYOUT & COMPONENTS ========== */
@@ -93,12 +115,14 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+      box-shadow: 0 0 15px rgba(255, 53, 94, 0.6),
+                  0 5px 15px rgba(255, 53, 94, 0.4);
       text-decoration: none;
       margin-top: 20px;
       position: relative;
       overflow: hidden;
       z-index: 1;
+      text-shadow: 0 0 5px rgba(0,0,0,0.3);
     }
 
     .btn::before {
@@ -108,7 +132,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, var(--secondary), var(--primary));
+      background: linear-gradient(45deg, var(--deep-red), var(--neon-red));
       z-index: -1;
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -116,7 +140,9 @@
 
     .btn:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(233, 69, 96, 0.6);
+      box-shadow: 0 0 20px rgba(255, 53, 94, 0.8),
+                  0 10px 25px rgba(255, 53, 94, 0.6);
+      color: var(--light);
     }
 
     .btn:hover::before {
@@ -135,8 +161,8 @@
       border-radius: 10px;
     }
 
-    /* ========== FLOATING ELEMENTS BACKGROUND ========== */
-    #floating-elements {
+    /* ========== FLOATING ROSES & HEARTS ========== */
+    #floating-bg {
       position: fixed;
       top: 0;
       left: 0;
@@ -144,17 +170,42 @@
       height: 100%;
       pointer-events: none;
       z-index: -1;
+      overflow: hidden;
     }
 
-    .floating-element {
+    .floating-rose {
       position: absolute;
-      font-size: 1.5rem;
+      width: 40px;
+      height: 40px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ff355e" d="M50 20c-10 0-20 10-20 20 0 10 20 40 20 40s20-30 20-40c0-10-10-20-20-20zm0 10c5 0 10 5 10 10 0 5-5 10-10 10s-10-5-10-10c0-5 5-10 10-10z"/></svg>');
+      background-size: contain;
       opacity: 0.6;
-      animation: float linear infinite;
-      user-select: none;
+      animation: float-rose linear infinite;
+      filter: drop-shadow(0 0 5px var(--neon-red));
     }
 
-    @keyframes float {
+    .floating-heart {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ff355e" d="M50 30c-10-20-40 0-40 20 0 20 40 40 40 40s40-20 40-40c0-20-30-40-40-20z"/></svg>');
+      background-size: contain;
+      opacity: 0.5;
+      animation: float-heart linear infinite;
+      filter: drop-shadow(0 0 5px var(--neon-red));
+    }
+
+    .floating-balloon {
+      position: absolute;
+      width: 50px;
+      height: 70px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 140"><path fill="%23ff355e" d="M50 10c-20 0-30 20-30 40 0 30 30 60 30 60s30-30 30-60c0-20-10-40-30-40zm0 10c10 0 20 10 20 20 0 10-10 20-20 20s-20-10-20-20c0-10 10-20 20-20z"/><path fill="%23ffd700" d="M50 110l-10 30h20z"/></svg>');
+      background-size: contain;
+      opacity: 0.4;
+      animation: float-balloon linear infinite;
+    }
+
+    @keyframes float-rose {
       0% {
         transform: translateY(100vh) translateX(0) rotate(0deg);
         opacity: 0;
@@ -171,12 +222,44 @@
       }
     }
 
-    /* ========== PARTICLES BACKGROUND ========== */
-    #particles-js {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
+    @keyframes float-heart {
+      0% {
+        transform: translateY(100vh) translateX(0) scale(1);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.5;
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      90% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: translateY(-100px) translateX(-100px) scale(1);
+        opacity: 0;
+      }
+    }
+
+    @keyframes float-balloon {
+      0% {
+        transform: translateY(100vh) translateX(0) rotate(-5deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.4;
+      }
+      50% {
+        transform: rotate(5deg);
+      }
+      90% {
+        opacity: 0.4;
+      }
+      100% {
+        transform: translateY(-100px) translateX(50px) rotate(-5deg);
+        opacity: 0;
+      }
     }
 
     /* ========== SLIDES ========== */
@@ -199,7 +282,7 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle, rgba(255,105,180,0.1) 0%, rgba(0,0,0,0) 70%);
+      background: radial-gradient(circle, rgba(255, 53, 94, 0.1) 0%, rgba(0,0,0,0) 70%);
       z-index: -1;
       animation: pulse 15s infinite alternate;
     }
@@ -214,14 +297,16 @@
       width: 90%;
       border-radius: 20px;
       margin-bottom: 40px;
-      box-shadow: 0 15px 35px rgba(233, 69, 96, 0.3);
+      box-shadow: 0 15px 35px rgba(255, 53, 94, 0.3),
+                  0 0 20px rgba(255, 53, 94, 0.2);
       transition: all 0.5s ease;
       border: 5px solid rgba(255, 255, 255, 0.1);
     }
 
     .slide img:hover {
       transform: scale(1.05) rotate(-2deg);
-      box-shadow: 0 20px 40px rgba(233, 69, 96, 0.5);
+      box-shadow: 0 20px 40px rgba(255, 53, 94, 0.5),
+                  0 0 30px rgba(255, 53, 94, 0.3);
     }
 
     /* ========== MUSIC PLAYER ========== */
@@ -229,33 +314,38 @@
       position: fixed;
       bottom: 30px;
       right: 30px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(26, 0, 13, 0.7);
       backdrop-filter: blur(10px);
       border-radius: 50px;
       padding: 12px 25px;
       display: flex;
       align-items: center;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3),
+                  0 0 10px rgba(255, 53, 94, 0.3);
       z-index: 100;
       transition: all 0.3s ease;
+      border: 1px solid rgba(255, 53, 94, 0.3);
     }
 
     .music-player:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4),
+                  0 0 15px rgba(255, 53, 94, 0.5);
     }
 
     .music-player i {
       font-size: 1.5rem;
       margin-right: 15px;
       cursor: pointer;
-      color: var(--accent);
+      color: var(--neon-red);
       transition: all 0.3s ease;
+      text-shadow: 0 0 5px var(--neon-red);
     }
 
     .music-player i:hover {
-      color: var(--primary);
+      color: var(--gold);
       transform: scale(1.1);
+      text-shadow: 0 0 10px var(--gold);
     }
 
     .music-player span {
@@ -292,9 +382,10 @@
       max-width: 600px;
       width: 90%;
       text-align: center;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7),
+                  0 0 30px rgba(255, 53, 94, 0.4);
       position: relative;
-      border: 2px solid var(--primary);
+      border: 2px solid var(--neon-red);
       transform: scale(0.9);
       transition: all 0.3s ease;
     }
@@ -307,8 +398,8 @@
       position: absolute;
       top: 15px;
       right: 15px;
-      background: var(--primary);
-      color: white;
+      background: var(--neon-red);
+      color: var(--light);
       border: none;
       width: 35px;
       height: 35px;
@@ -319,11 +410,14 @@
       align-items: center;
       justify-content: center;
       transition: all 0.3s ease;
+      box-shadow: 0 0 10px var(--neon-red);
     }
 
     .close-btn:hover {
-      background: var(--secondary);
+      background: var(--gold);
       transform: rotate(90deg);
+      color: var(--darkest);
+      box-shadow: 0 0 15px var(--gold);
     }
 
     /* ========== SPECIAL MESSAGE MODAL ========== */
@@ -345,40 +439,50 @@
       font-family: 'Dancing Script', cursive;
       font-size: 2rem;
       margin-top: 30px;
-      color: var(--accent);
+      color: var(--neon-red);
+      text-shadow: 0 0 5px rgba(255, 53, 94, 0.5);
     }
 
-    /* ========== CAKE CELEBRATION SECTION ========== */
-    .cake-container {
+    /* ========== CANDLE CELEBRATION SECTION ========== */
+    .candle-container {
       position: relative;
       width: 350px;
       height: 350px;
       margin: 0 auto 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .cake {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .cake:hover {
-      transform: scale(1.05);
-    }
-
-    /* Candle Styles */
-    .candle {
       position: absolute;
+      width: 200px;
+      height: 100px;
+      background: linear-gradient(to bottom, #f9e0e5, #f8c3d0);
+      border-radius: 0 0 20px 20px;
+      bottom: 0;
+      z-index: 1;
+    }
+
+    .cake:before {
+      content: '';
+      position: absolute;
+      width: 220px;
+      height: 30px;
+      background: linear-gradient(to bottom, #f8c3d0, #f6a6bb);
+      border-radius: 10px;
+      top: -15px;
+      left: -10px;
+    }
+
+    .candle {
+      position: relative;
       width: 20px;
       height: 80px;
-      background: linear-gradient(to right, #f8f8f8, #ffffff, #f8f8f8);
+      background: linear-gradient(to right, var(--gold), #ffffff, var(--gold));
       border-radius: 5px;
-      top: -90px;
-      left: 50%;
-      transform: translateX(-50%);
       z-index: 5;
+      box-shadow: 0 0 10px var(--gold);
     }
 
     .flame {
@@ -390,20 +494,17 @@
       top: -30px;
       left: 50%;
       transform: translateX(-50%);
-      box-shadow: 0 0 20px #ff6600, 0 0 60px #ff9900;
+      box-shadow: 0 0 20px #ff6600, 
+                  0 0 60px #ff9900,
+                  0 0 100px #ffcc00;
       animation: flicker 0.5s infinite alternate;
       transition: all 0.3s ease;
       cursor: pointer;
+      z-index: 10;
     }
 
     .flame:hover {
       transform: translateX(-50%) scale(1.2);
-    }
-
-    @keyframes flicker {
-      0% { transform: translateX(-50%) scale(1); opacity: 1; }
-      50% { transform: translateX(-50%) scale(1.05, 0.95); opacity: 0.9; }
-      100% { transform: translateX(-50%) scale(1.1, 0.9); opacity: 0.8; }
     }
 
     .blown-out {
@@ -454,18 +555,19 @@
       width: 100%;
       padding: 15px;
       border-radius: 10px;
-      border: 2px solid var(--primary);
-      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid var(--neon-red);
+      background: rgba(26, 0, 13, 0.5);
       color: white;
       font-size: 1.1rem;
       margin-bottom: 20px;
       outline: none;
       transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(255, 53, 94, 0.3);
     }
 
     .wish-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
+      border-color: var(--gold);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
     }
 
     .final-message {
@@ -479,7 +581,7 @@
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      box-shadow: 0 0 10px 5px var(--accent);
+      box-shadow: 0 0 10px 5px var(--neon-red);
       animation: explode 1s forwards;
       opacity: 0;
     }
@@ -489,12 +591,39 @@
       100% { transform: scale(20); opacity: 0; }
     }
 
+    /* ========== BIRTHDAY ACCESSORIES ========== */
+    .birthday-hat {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ff355e" d="M20 30l30-20 30 20v40h-60z"/><circle fill="%23ffd700" cx="50" cy="10" r="10"/><path fill="%23ffd700" d="M50 10l-10 20h20z"/></svg>');
+      background-size: contain;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      opacity: 0;
+      animation: confetti-fall linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
     /* ========== RESPONSIVE STYLES ========== */
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
       .cursive { font-size: 2.2rem; }
       .slide img { max-width: 300px; }
-      .cake-container { width: 280px; height: 280px; }
+      .candle-container { width: 280px; height: 280px; }
       .modal-content { padding: 30px 20px; }
     }
 
@@ -502,18 +631,15 @@
       h1 { font-size: 2rem; }
       .cursive { font-size: 1.8rem; }
       .slide img { max-width: 250px; }
-      .cake-container { width: 220px; height: 220px; }
+      .candle-container { width: 220px; height: 220px; }
       .music-player { padding: 10px 15px; font-size: 0.9rem; }
       .music-player i { font-size: 1.2rem; margin-right: 10px; }
     }
   </style>
 </head>
 <body>
-  <!-- Floating Elements Background -->
-  <div id="floating-elements"></div>
-
-  <!-- Particles.js Background -->
-  <div id="particles-js"></div>
+  <!-- Floating Background Elements -->
+  <div id="floating-bg"></div>
 
   <!-- Music Player -->
   <div class="music-player">
@@ -528,40 +654,41 @@
   <div class="modal" id="message-modal">
     <div class="modal-content message-content">
       <button class="close-btn" id="close-message">✕</button>
-      <h1 class="cursive">My Dearest Awantika</h1>
+      <h1 class="cursive neon-text">My Dearest Awantika</h1>
       <p>On your special day, I want you to know how much you mean to me. You're not just my love, you're my inspiration, my happiness, and my everything. Every moment with you feels like a beautiful dream I never want to wake up from.</p>
       <p>May this year bring you all the joy, success, and love you deserve. I promise to stand by you through all of life's adventures. Happy birthday to the most amazing woman in my life!</p>
       <p class="signature">Forever Yours</p>
     </div>
   </div>
 
-  <!-- Cake Celebration Modal -->
-  <div class="modal" id="cake-modal">
+  <!-- Candle Celebration Modal -->
+  <div class="modal" id="candle-modal">
     <div class="modal-content">
-      <div class="cake-container">
+      <div class="birthday-hat"></div>
+      <div class="candle-container">
+        <div class="cake"></div>
         <div class="candle">
           <div class="flame" id="flame"></div>
           <div class="smoke" id="smoke"></div>
         </div>
-        <img src="https://i.imgur.com/JWZQX9O.png" alt="Birthday Cake" class="cake">
       </div>
       
       <div class="wish-section" id="wish-section">
-        <h2 class="cursive">Make a Wish!</h2>
+        <h2 class="cursive neon-text">Make a Wish!</h2>
         <p>Type your birthday wish below and it will come true!</p>
         <input type="text" class="wish-input" id="wish-input" placeholder="Your birthday wish...">
         <button class="btn" id="make-wish">Make a Wish ✨</button>
       </div>
       
       <div class="final-message" id="final-message">
-        <h2 class="cursive">Happy Birthday Awantika!</h2>
+        <h2 class="cursive neon-text">Happy Birthday Awantika!</h2>
         <p id="wish-message">"May your life be as beautiful as your smile, as bright as your eyes, and as wonderful as you are."</p>
         <button class="btn" id="end-celebration">Close Celebration</button>
       </div>
     </div>
   </div>
 
-  <!-- Slides -->
+  <!-- Slides with 13 Pictures -->
   <div class="slide" data-aos="fade-up">
     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
     <h1>Happy Birthday Awantika! <span class="cursive">My Love</span></h1>
@@ -571,44 +698,85 @@
 
   <div class="slide" data-aos="fade-left">
     <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
-    <h1>You're My <span class="cursive">Perfect Match</span></h1>
+    <h1>You're My <span class="cursive neon-text">Perfect Match</span></h1>
     <p>Like JavaScript to Node.js, like Python to Django - we were meant to be together. 💑</p>
   </div>
 
   <div class="slide" data-aos="fade-right">
     <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
-    <h1>My Heart <span class="cursive">Only Compiles</span> For You</h1>
+    <h1>My Heart <span class="cursive neon-text">Only Compiles</span> For You</h1>
     <p>No syntax errors, no bugs - just pure love that runs perfectly in my heart's runtime. 💝</p>
   </div>
 
   <div class="slide" data-aos="zoom-in">
     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
-    <h1>You're My <span class="cursive">Forever Variable</span></h1>
+    <h1>You're My <span class="cursive neon-text">Forever Variable</span></h1>
     <p>const myHeart = "Awantika"; // Never changing, always true ❤️</p>
   </div>
 
   <div class="slide" data-aos="flip-up">
     <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
-    <h1>Our Love is <span class="cursive">Infinite</span></h1>
+    <h1>Our Love is <span class="cursive neon-text">Infinite</span></h1>
     <p>while (true) { loveYouMore(); } // This loop never breaks 💞</p>
   </div>
 
   <div class="slide" data-aos="fade-down">
     <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
-    <h1>You Complete <span class="cursive">My Code</span></h1>
+    <h1>You Complete <span class="cursive neon-text">My Code</span></h1>
     <p>Without you, my life would be full of undefined errors! 🥰</p>
   </div>
 
   <div class="slide" data-aos="zoom-out">
     <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
-    <h1>Let's Celebrate! <span class="cursive">Blow the Candles</span></h1>
+    <h1>Let's Celebrate! <span class="cursive neon-text">Blow the Candle</span></h1>
     <p>Click the button below to begin your birthday celebration!</p>
-    <button class="btn" id="start-celebration">Blow Candles 🎂</button>
+    <button class="btn" id="start-celebration">Blow Candle 🎂</button>
+  </div>
+
+  <div class="slide" data-aos="fade-up">
+    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
+    <h1>Your Smile <span class="cursive neon-text">Lights Up</span> My World</h1>
+    <p>Like the most beautiful UI that makes my heart's API respond with joy. 💖</p>
+  </div>
+
+  <div class="slide" data-aos="fade-left">
+    <img src="https://images.unsplash.com/photo-1524502397800-2eeaad7c3fe5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
+    <h1>You're My <span class="cursive neon-text">Favorite Exception</span></h1>
+    <p>try { beWithYou(); } catch(myHeart) { throw new LoveException("I can't help it!"); }</p>
+  </div>
+
+  <div class="slide" data-aos="fade-right">
+    <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
+    <h1>Our Love is <span class="cursive neon-text">Type Safe</span></h1>
+    <p>No type coercion needed - we're perfectly compatible. 💘</p>
+  </div>
+
+  <div class="slide" data-aos="zoom-in">
+    <img src="https://images.unsplash.com/photo-1514316703755-dca7d7d9d4c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
+    <h1>You're My <span class="cursive neon-text">Null Safety</span></h1>
+    <p>With you, my life will never throw a NullPointerException. 💕</p>
+  </div>
+
+  <div class="slide" data-aos="flip-up">
+    <img src="https://images.unsplash.com/photo-1514315384763-ba401779410f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
+    <h1>My Love for You is <span class="cursive neon-text">Asynchronous</span></h1>
+    <p>await myHeart.beWithYou(); // Resolves to eternal happiness 💗</p>
+  </div>
+
+  <div class="slide" data-aos="fade-down">
+    <img src="https://images.unsplash.com/photo-1514316454349-750a7fd3da3a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
+    <h1>You're My <span class="cursive neon-text">Perfect Dependency</span></h1>
+    <p>No version conflicts, always compatible, and makes everything better. 💓</p>
+  </div>
+
+  <div class="slide" data-aos="zoom-out">
+    <img src="https://images.unsplash.com/photo-1514316603539-7c0a6d4767aa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
+    <h1>Happy Birthday <span class="cursive neon-text">Again!</span></h1>
+    <p>Because one celebration is never enough for someone as special as you! 🎉</p>
   </div>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     // ========== INITIALIZATIONS ==========
@@ -619,11 +787,8 @@
         once: true
       });
 
-      // Create floating elements
+      // Create floating background elements
       createFloatingElements();
-
-      // Initialize particles.js
-      initParticles();
 
       // Initialize music player
       initMusicPlayer();
@@ -632,57 +797,38 @@
       initModals();
     });
 
-    // ========== FLOATING ELEMENTS ==========
+    // ========== FLOATING BACKGROUND ELEMENTS ==========
     function createFloatingElements() {
-      const container = document.getElementById('floating-elements');
-      const elementCount = 50;
-      const elements = ['❤️', '✨', '🎉', '🎈', '🎁', '🥳', '💝', '🌸', '🌟'];
+      const container = document.getElementById('floating-bg');
+      const elementCount = 20;
 
       for (let i = 0; i < elementCount; i++) {
-        const element = document.createElement('div');
-        element.className = 'floating-element';
-        element.innerHTML = elements[Math.floor(Math.random() * elements.length)];
-        element.style.left = `${Math.random() * 100}vw`;
-        element.style.animationDuration = `${Math.random() * 10 + 5}s`;
-        element.style.animationDelay = `${Math.random() * 5}s`;
-        element.style.fontSize = `${Math.random() * 2 + 1}rem`;
-        container.appendChild(element);
-      }
-    }
+        // Create roses
+        const rose = document.createElement('div');
+        rose.className = 'floating-rose';
+        rose.style.left = `${Math.random() * 100}vw`;
+        rose.style.animationDuration = `${Math.random() * 15 + 10}s`;
+        rose.style.animationDelay = `${Math.random() * 5}s`;
+        container.appendChild(rose);
 
-    // ========== PARTICLES.JS ==========
-    function initParticles() {
-      particlesJS('particles-js', {
-        particles: {
-          number: { value: 80, density: { enable: true, value_area: 800 } },
-          color: { value: "#FF6B8B" },
-          shape: { type: ["circle", "triangle", "star"] },
-          opacity: { value: 0.5, random: true },
-          size: { value: 3, random: true },
-          line_linked: { 
-            enable: true, 
-            distance: 150, 
-            color: "#FF8E53", 
-            opacity: 0.4, 
-            width: 1 
-          },
-          move: { 
-            enable: true, 
-            speed: 3, 
-            direction: "none", 
-            random: true, 
-            straight: false, 
-            out_mode: "out" 
-          }
-        },
-        interactivity: {
-          detect_on: "canvas",
-          events: {
-            onhover: { enable: true, mode: "repulse" },
-            onclick: { enable: true, mode: "push" }
-          }
+        // Create hearts
+        const heart = document.createElement('div');
+        heart.className = 'floating-heart';
+        heart.style.left = `${Math.random() * 100}vw`;
+        heart.style.animationDuration = `${Math.random() * 12 + 8}s`;
+        heart.style.animationDelay = `${Math.random() * 5}s`;
+        container.appendChild(heart);
+
+        // Create balloons (fewer than hearts/roses)
+        if (i % 3 === 0) {
+          const balloon = document.createElement('div');
+          balloon.className = 'floating-balloon';
+          balloon.style.left = `${Math.random() * 100}vw`;
+          balloon.style.animationDuration = `${Math.random() * 20 + 15}s`;
+          balloon.style.animationDelay = `${Math.random() * 5}s`;
+          container.appendChild(balloon);
         }
-      });
+      }
     }
 
     // ========== MUSIC PLAYER ==========
@@ -739,15 +885,16 @@
       openLetterBtn.addEventListener('click', () => {
         messageModal.classList.add('active');
         shootConfetti();
+        createConfettiFall();
       });
 
       closeMessageBtn.addEventListener('click', () => {
         messageModal.classList.remove('active');
       });
 
-      // Cake Celebration Modal
+      // Candle Celebration Modal
       const startCelebrationBtn = document.getElementById('start-celebration');
-      const cakeModal = document.getElementById('cake-modal');
+      const candleModal = document.getElementById('candle-modal');
       const flame = document.getElementById('flame');
       const smoke = document.getElementById('smoke');
       const wishSection = document.getElementById('wish-section');
@@ -758,8 +905,9 @@
       const wishMessage = document.getElementById('wish-message');
 
       startCelebrationBtn.addEventListener('click', () => {
-        cakeModal.classList.add('active');
+        candleModal.classList.add('active');
         shootConfetti();
+        createConfettiFall();
       });
 
       // Candle blowing functionality
@@ -792,7 +940,8 @@
           
           // Big celebration
           shootConfetti();
-          createFireworks(10);
+          createFireworks(15);
+          createConfettiFall(50);
           
           // Change music to celebration tune
           const bgMusic = document.getElementById('bg-music');
@@ -804,7 +953,7 @@
       });
 
       endCelebrationBtn.addEventListener('click', () => {
-        cakeModal.classList.remove('active');
+        candleModal.classList.remove('active');
         // Reset for next time
         wishSection.style.display = 'none';
         finalMessage.style.display = 'none';
@@ -819,8 +968,8 @@
         if (e.target === messageModal) {
           messageModal.classList.remove('active');
         }
-        if (e.target === cakeModal) {
-          cakeModal.classList.remove('active');
+        if (e.target === candleModal) {
+          candleModal.classList.remove('active');
         }
       });
 
@@ -837,10 +986,34 @@
         particleCount: 200,
         spread: 90,
         origin: { y: 0.6 },
-        colors: ['#FF6B8B', '#FF8E53', '#FFD166', '#06D6A0', '#118AB2'],
+        colors: ['#ff355e', '#d10047', '#FFD700', '#ffb8c6', '#E0BFB8'],
         shapes: ['circle', 'heart'],
         scalar: 1.2
       });
+    }
+
+    // Create falling confetti pieces
+    function createConfettiFall(count = 30) {
+      const container = document.getElementById('floating-bg');
+      
+      for (let i = 0; i < count; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti-piece';
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        
+        // Random color
+        const colors = ['#ff355e', '#d10047', '#FFD700', '#ffb8c6'];
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        container.appendChild(confetti);
+        
+        // Remove after animation
+        setTimeout(() => {
+          confetti.remove();
+        }, 5000);
+      }
     }
 
     // ========== FIREWORKS EFFECT ==========
@@ -851,7 +1024,7 @@
           firework.className = 'firework';
           firework.style.left = `${Math.random() * 100}vw`;
           firework.style.top = `${Math.random() * 100}vh`;
-          firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+          firework.style.backgroundColor = `hsl(${Math.random() * 30 + 330}, 100%, 60%)`;
           document.body.appendChild(firework);
           
           setTimeout(() => {
@@ -862,7 +1035,10 @@
     }
 
     // Initial Confetti
-    setTimeout(shootConfetti, 1000);
+    setTimeout(() => {
+      shootConfetti();
+      createConfettiFall();
+    }, 1000);
 
     // Shoot confetti when clicking anywhere
     document.addEventListener('click', function(e) {
