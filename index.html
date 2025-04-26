@@ -12,34 +12,131 @@
   <!-- Three.js (3D Effects) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
+    /* ========== BASE STYLES ========== */
+    :root {
+      --primary: #FF6B8B;
+      --secondary: #FF8E53;
+      --dark: #2C3A47;
+      --darker: #1E2A3A;
+      --darkest: #0F1C2E;
+      --light: #ffffff;
+      --accent: #FFD166;
+      --gradient: linear-gradient(45deg, var(--primary), var(--secondary));
+      --gradient2: linear-gradient(45deg, #FF6B8B, #FF8E53, #FFD166);
+    }
+    
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-      color: #fff;
-      overflow-x: hidden;
+    html {
       scroll-behavior: smooth;
     }
 
-    /* Custom Scrollbar */
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, var(--dark), var(--darker), var(--darkest));
+      color: var(--light);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ========== TYPOGRAPHY ========== */
+    h1, h2, h3, h4 {
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      background: var(--gradient2);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+    }
+
+    .cursive {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.8rem;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin-bottom: 2rem;
+    }
+
+    /* ========== LAYOUT & COMPONENTS ========== */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--gradient);
+      color: var(--light);
+      border: none;
+      padding: 15px 35px;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+      text-decoration: none;
+      margin-top: 20px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--secondary), var(--primary));
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(233, 69, 96, 0.6);
+    }
+
+    .btn:hover::before {
+      opacity: 1;
+    }
+
+    /* ========== CUSTOM SCROLLBAR ========== */
     ::-webkit-scrollbar {
-      width: 10px;
+      width: 12px;
     }
     ::-webkit-scrollbar-track {
-      background: #1a1a2e;
+      background: var(--dark);
     }
     ::-webkit-scrollbar-thumb {
-      background: linear-gradient(#e94560, #ff6b6b);
+      background: var(--gradient);
       border-radius: 10px;
     }
 
-    /* Floating Hearts Background */
-    #floating-hearts {
+    /* ========== FLOATING ELEMENTS BACKGROUND ========== */
+    #floating-elements {
       position: fixed;
       top: 0;
       left: 0;
@@ -49,13 +146,47 @@
       z-index: -1;
     }
 
+    .floating-element {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0.6;
+      animation: float linear infinite;
+      user-select: none;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-100px) translateX(100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* ========== PARTICLES BACKGROUND ========== */
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    /* ========== SLIDES ========== */
     .slide {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 2rem;
+      padding: 4rem 2rem;
       text-align: center;
       position: relative;
       overflow: hidden;
@@ -79,67 +210,21 @@
     }
 
     .slide img {
-      max-width: 350px;
+      max-width: 400px;
+      width: 90%;
       border-radius: 20px;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
       box-shadow: 0 15px 35px rgba(233, 69, 96, 0.3);
-      transition: transform 0.5s ease;
+      transition: all 0.5s ease;
       border: 5px solid rgba(255, 255, 255, 0.1);
     }
 
     .slide img:hover {
       transform: scale(1.05) rotate(-2deg);
+      box-shadow: 0 20px 40px rgba(233, 69, 96, 0.5);
     }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 1.5rem;
-      background: linear-gradient(45deg, #ff6b6b, #e94560);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-weight: 800;
-    }
-
-    .cursive {
-      font-family: 'Dancing Script', cursive;
-      font-size: 2.5rem;
-    }
-
-    p {
-      font-size: 1.3rem;
-      max-width: 700px;
-      line-height: 1.8;
-      margin-bottom: 2rem;
-    }
-
-    .btn {
-      background: linear-gradient(45deg, #e94560, #ff6b6b);
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 50px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
-      margin-top: 20px;
-    }
-
-    .btn:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(233, 69, 96, 0.6);
-    }
-
-    /* Floating Particles */
-    #particles-js {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
-    /* Music Player */
+    /* ========== MUSIC PLAYER ========== */
     .music-player {
       position: fixed;
       bottom: 30px;
@@ -147,22 +232,38 @@
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
       border-radius: 50px;
-      padding: 10px 20px;
+      padding: 12px 25px;
       display: flex;
       align-items: center;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       z-index: 100;
+      transition: all 0.3s ease;
+    }
+
+    .music-player:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     }
 
     .music-player i {
       font-size: 1.5rem;
       margin-right: 15px;
       cursor: pointer;
-      color: #ff6b6b;
+      color: var(--accent);
+      transition: all 0.3s ease;
     }
 
-    /* Cake Cutting Section */
-    .cake-section {
+    .music-player i:hover {
+      color: var(--primary);
+      transform: scale(1.1);
+    }
+
+    .music-player span {
+      font-weight: 600;
+    }
+
+    /* ========== MODAL STYLES ========== */
+    .modal {
       position: fixed;
       top: 0;
       left: 0;
@@ -179,69 +280,192 @@
       transition: all 0.5s ease;
     }
 
-    .cake-section.active {
+    .modal.active {
       opacity: 1;
       pointer-events: all;
     }
 
+    .modal-content {
+      background: linear-gradient(135deg, var(--dark), var(--darker));
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      position: relative;
+      border: 2px solid var(--primary);
+      transform: scale(0.9);
+      transition: all 0.3s ease;
+    }
+
+    .modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background: var(--secondary);
+      transform: rotate(90deg);
+    }
+
+    /* ========== SPECIAL MESSAGE MODAL ========== */
+    .message-content {
+      position: relative;
+    }
+
+    .message-content h1 {
+      margin-bottom: 30px;
+    }
+
+    .message-content p {
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+      line-height: 1.8;
+    }
+
+    .signature {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+      margin-top: 30px;
+      color: var(--accent);
+    }
+
+    /* ========== CAKE CELEBRATION SECTION ========== */
     .cake-container {
       position: relative;
-      width: 300px;
-      height: 300px;
-      margin-bottom: 30px;
+      width: 350px;
+      height: 350px;
+      margin: 0 auto 40px;
     }
 
     .cake {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      cursor: pointer;
-      transition: transform 0.3s ease;
+      transition: all 0.3s ease;
+      position: relative;
     }
 
     .cake:hover {
       transform: scale(1.05);
     }
 
-    .knife {
+    /* Candle Styles */
+    .candle {
       position: absolute;
-      width: 100px;
-      height: 100px;
-      top: 50%;
+      width: 20px;
+      height: 80px;
+      background: linear-gradient(to right, #f8f8f8, #ffffff, #f8f8f8);
+      border-radius: 5px;
+      top: -90px;
       left: 50%;
-      transform: translate(-50%, -50%) rotate(-45deg);
-      z-index: 10;
-      pointer-events: none;
+      transform: translateX(-50%);
+      z-index: 5;
+    }
+
+    .flame {
+      position: absolute;
+      width: 15px;
+      height: 30px;
+      background: linear-gradient(to top, #ff7800, #ffdc00);
+      border-radius: 50% 50% 20% 20%;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 20px #ff6600, 0 0 60px #ff9900;
+      animation: flicker 0.5s infinite alternate;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .flame:hover {
+      transform: translateX(-50%) scale(1.2);
+    }
+
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1); opacity: 1; }
+      50% { transform: translateX(-50%) scale(1.05, 0.95); opacity: 0.9; }
+      100% { transform: translateX(-50%) scale(1.1, 0.9); opacity: 0.8; }
+    }
+
+    .blown-out {
+      animation: blowOut 0.5s forwards;
+    }
+
+    @keyframes blowOut {
+      0% { transform: translateX(-50%) scale(1); opacity: 1; }
+      100% { transform: translateX(-50%) scale(0); opacity: 0; }
+    }
+
+    .smoke {
+      position: absolute;
+      width: 5px;
+      height: 20px;
+      background: rgba(200, 200, 200, 0.8);
+      border-radius: 50%;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
       opacity: 0;
-      transition: all 0.5s ease;
     }
 
-    .cake-cut .knife {
-      opacity: 1;
-      animation: cutAnimation 1s forwards;
+    .blow-smoke {
+      animation: smokeRise 2s forwards;
     }
 
-    @keyframes cutAnimation {
-      0% { transform: translate(-50%, -50%) rotate(-45deg); }
-      100% { transform: translate(-50%, -50%) rotate(45deg); }
+    @keyframes smokeRise {
+      0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateX(-50%) translateY(-100px) scale(3); opacity: 0; }
     }
 
+    /* Wish Section Styles */
     .wish-section {
       display: none;
       max-width: 500px;
+      width: 90%;
       text-align: center;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .wish-input {
       width: 100%;
       padding: 15px;
       border-radius: 10px;
-      border: 2px solid #ff6b6b;
+      border: 2px solid var(--primary);
       background: rgba(255, 255, 255, 0.1);
       color: white;
       font-size: 1.1rem;
       margin-bottom: 20px;
       outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .wish-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
     }
 
     .final-message {
@@ -249,37 +473,95 @@
       animation: fadeIn 2s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    /* ========== FIREWORKS ========== */
+    .firework {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      box-shadow: 0 0 10px 5px var(--accent);
+      animation: explode 1s forwards;
+      opacity: 0;
     }
 
-    /* Responsive */
+    @keyframes explode {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(20); opacity: 0; }
+    }
+
+    /* ========== RESPONSIVE STYLES ========== */
     @media (max-width: 768px) {
-      h1 { font-size: 2.2rem; }
-      .cursive { font-size: 2rem; }
-      .slide img { max-width: 280px; }
-      .cake-container { width: 250px; height: 250px; }
+      h1 { font-size: 2.5rem; }
+      .cursive { font-size: 2.2rem; }
+      .slide img { max-width: 300px; }
+      .cake-container { width: 280px; height: 280px; }
+      .modal-content { padding: 30px 20px; }
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 2rem; }
+      .cursive { font-size: 1.8rem; }
+      .slide img { max-width: 250px; }
+      .cake-container { width: 220px; height: 220px; }
+      .music-player { padding: 10px 15px; font-size: 0.9rem; }
+      .music-player i { font-size: 1.2rem; margin-right: 10px; }
     }
   </style>
 </head>
 <body>
-  <!-- Floating Hearts Background -->
-  <div id="floating-hearts"></div>
+  <!-- Floating Elements Background -->
+  <div id="floating-elements"></div>
 
   <!-- Particles.js Background -->
   <div id="particles-js"></div>
 
-  <!-- Music Player (Auto-Play) -->
+  <!-- Music Player -->
   <div class="music-player">
     <i class="fas fa-music"></i>
-    <audio id="bg-music" loop autoplay>
+    <audio id="bg-music" loop>
       <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
     </audio>
     <span>Birthday Music 🎵</span>
   </div>
 
-  <!-- Slides (7 Photos) -->
+  <!-- Special Message Modal -->
+  <div class="modal" id="message-modal">
+    <div class="modal-content message-content">
+      <button class="close-btn" id="close-message">✕</button>
+      <h1 class="cursive">My Dearest Awantika</h1>
+      <p>On your special day, I want you to know how much you mean to me. You're not just my love, you're my inspiration, my happiness, and my everything. Every moment with you feels like a beautiful dream I never want to wake up from.</p>
+      <p>May this year bring you all the joy, success, and love you deserve. I promise to stand by you through all of life's adventures. Happy birthday to the most amazing woman in my life!</p>
+      <p class="signature">Forever Yours</p>
+    </div>
+  </div>
+
+  <!-- Cake Celebration Modal -->
+  <div class="modal" id="cake-modal">
+    <div class="modal-content">
+      <div class="cake-container">
+        <div class="candle">
+          <div class="flame" id="flame"></div>
+          <div class="smoke" id="smoke"></div>
+        </div>
+        <img src="https://i.imgur.com/JWZQX9O.png" alt="Birthday Cake" class="cake">
+      </div>
+      
+      <div class="wish-section" id="wish-section">
+        <h2 class="cursive">Make a Wish!</h2>
+        <p>Type your birthday wish below and it will come true!</p>
+        <input type="text" class="wish-input" id="wish-input" placeholder="Your birthday wish...">
+        <button class="btn" id="make-wish">Make a Wish ✨</button>
+      </div>
+      
+      <div class="final-message" id="final-message">
+        <h2 class="cursive">Happy Birthday Awantika!</h2>
+        <p id="wish-message">"May your life be as beautiful as your smile, as bright as your eyes, and as wonderful as you are."</p>
+        <button class="btn" id="end-celebration">Close Celebration</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slides -->
   <div class="slide" data-aos="fade-up">
     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
     <h1>Happy Birthday Awantika! <span class="cursive">My Love</span></h1>
@@ -319,30 +601,9 @@
 
   <div class="slide" data-aos="zoom-out">
     <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
-    <h1>Let's Celebrate! <span class="cursive">Cut the Cake</span></h1>
+    <h1>Let's Celebrate! <span class="cursive">Blow the Candles</span></h1>
     <p>Click the button below to begin your birthday celebration!</p>
-    <button class="btn" id="start-celebration">Cut the Cake 🎂</button>
-  </div>
-
-  <!-- Cake Cutting Section -->
-  <div class="cake-section" id="cake-section">
-    <div class="cake-container">
-      <img src="https://i.imgur.com/JWZQX9O.png" alt="Birthday Cake" class="cake" id="cake">
-      <img src="https://i.imgur.com/5XQZQ9L.png" alt="Knife" class="knife">
-    </div>
-    
-    <div class="wish-section" id="wish-section">
-      <h2 class="cursive">Make a Wish!</h2>
-      <p>Type your birthday wish below and it will come true!</p>
-      <input type="text" class="wish-input" id="wish-input" placeholder="Your birthday wish...">
-      <button class="btn" id="make-wish">Make a Wish ✨</button>
-    </div>
-    
-    <div class="final-message" id="final-message">
-      <h2 class="cursive">Happy Birthday Awantika!</h2>
-      <p>"May your life be as beautiful as your smile, as bright as your eyes, and as wonderful as you are."</p>
-      <button class="btn" id="end-celebration">Close Celebration</button>
-    </div>
+    <button class="btn" id="start-celebration">Blow Candles 🎂</button>
   </div>
 
   <!-- Scripts -->
@@ -350,153 +611,262 @@
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // Initialize AOS (Animate On Scroll)
-    AOS.init({
-      duration: 1000,
-      once: true
-    });
-
-    // Music Player (Auto-Play)
-    const musicPlayer = document.querySelector('.music-player');
-    const musicIcon = document.querySelector('.fa-music');
-    const bgMusic = document.getElementById('bg-music');
-    
-    // Auto-play music on page load
+    // ========== INITIALIZATIONS ==========
     document.addEventListener('DOMContentLoaded', function() {
-      bgMusic.play().catch(e => console.log("Auto-play blocked by browser"));
-      musicIcon.classList.remove('fa-music');
-      musicIcon.classList.add('fa-pause');
-      musicPlayer.querySelector('span').textContent = 'Playing...';
+      // Initialize AOS (Animate On Scroll)
+      AOS.init({
+        duration: 1000,
+        once: true
+      });
+
+      // Create floating elements
+      createFloatingElements();
+
+      // Initialize particles.js
+      initParticles();
+
+      // Initialize music player
+      initMusicPlayer();
+
+      // Initialize modals and event listeners
+      initModals();
     });
 
-    // Toggle play/pause
-    musicPlayer.addEventListener('click', () => {
-      if (bgMusic.paused) {
-        bgMusic.play();
-        musicIcon.classList.remove('fa-music');
-        musicIcon.classList.add('fa-pause');
-        musicPlayer.querySelector('span').textContent = 'Playing...';
-      } else {
-        bgMusic.pause();
-        musicIcon.classList.remove('fa-pause');
-        musicIcon.classList.add('fa-music');
-        musicPlayer.querySelector('span').textContent = 'Paused';
+    // ========== FLOATING ELEMENTS ==========
+    function createFloatingElements() {
+      const container = document.getElementById('floating-elements');
+      const elementCount = 50;
+      const elements = ['❤️', '✨', '🎉', '🎈', '🎁', '🥳', '💝', '🌸', '🌟'];
+
+      for (let i = 0; i < elementCount; i++) {
+        const element = document.createElement('div');
+        element.className = 'floating-element';
+        element.innerHTML = elements[Math.floor(Math.random() * elements.length)];
+        element.style.left = `${Math.random() * 100}vw`;
+        element.style.animationDuration = `${Math.random() * 10 + 5}s`;
+        element.style.animationDelay = `${Math.random() * 5}s`;
+        element.style.fontSize = `${Math.random() * 2 + 1}rem`;
+        container.appendChild(element);
       }
-    });
+    }
 
-    // Cake Cutting Celebration
-    const startCelebrationBtn = document.getElementById('start-celebration');
-    const cakeSection = document.getElementById('cake-section');
-    const cake = document.getElementById('cake');
-    const wishSection = document.getElementById('wish-section');
-    const finalMessage = document.getElementById('final-message');
-    const makeWishBtn = document.getElementById('make-wish');
-    const endCelebrationBtn = document.getElementById('end-celebration');
+    // ========== PARTICLES.JS ==========
+    function initParticles() {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 80, density: { enable: true, value_area: 800 } },
+          color: { value: "#FF6B8B" },
+          shape: { type: ["circle", "triangle", "star"] },
+          opacity: { value: 0.5, random: true },
+          size: { value: 3, random: true },
+          line_linked: { 
+            enable: true, 
+            distance: 150, 
+            color: "#FF8E53", 
+            opacity: 0.4, 
+            width: 1 
+          },
+          move: { 
+            enable: true, 
+            speed: 3, 
+            direction: "none", 
+            random: true, 
+            straight: false, 
+            out_mode: "out" 
+          }
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" }
+          }
+        }
+      });
+    }
 
-    startCelebrationBtn.addEventListener('click', () => {
-      cakeSection.classList.add('active');
-      shootConfetti();
-    });
+    // ========== MUSIC PLAYER ==========
+    function initMusicPlayer() {
+      const musicPlayer = document.querySelector('.music-player');
+      const musicIcon = document.querySelector('.music-player i');
+      const bgMusic = document.getElementById('bg-music');
+      
+      // Try to autoplay music (may be blocked by browser)
+      const playMusic = () => {
+        bgMusic.play()
+          .then(() => {
+            musicIcon.classList.remove('fa-music');
+            musicIcon.classList.add('fa-pause');
+            musicPlayer.querySelector('span').textContent = 'Playing...';
+          })
+          .catch(e => {
+            // If autoplay is blocked, show play button
+            musicIcon.classList.add('fa-music');
+            musicPlayer.querySelector('span').textContent = 'Click to play';
+          });
+      };
+      
+      // Try to play after user interaction
+      document.body.addEventListener('click', function firstInteraction() {
+        playMusic();
+        document.body.removeEventListener('click', firstInteraction);
+      }, { once: true });
 
-    cake.addEventListener('click', () => {
-      cake.classList.add('cake-cut');
-      setTimeout(() => {
-        cake.style.opacity = '0';
-        wishSection.style.display = 'block';
-      }, 1000);
-    });
+      // Toggle play/pause
+      musicPlayer.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent triggering the autoplay listener
+        if (bgMusic.paused) {
+          bgMusic.play();
+          musicIcon.classList.remove('fa-music');
+          musicIcon.classList.add('fa-pause');
+          musicPlayer.querySelector('span').textContent = 'Playing...';
+        } else {
+          bgMusic.pause();
+          musicIcon.classList.remove('fa-pause');
+          musicIcon.classList.add('fa-music');
+          musicPlayer.querySelector('span').textContent = 'Paused';
+        }
+      });
+    }
 
-    makeWishBtn.addEventListener('click', () => {
-      const wish = document.getElementById('wish-input').value;
-      if (wish.trim() !== '') {
-        wishSection.style.display = 'none';
-        finalMessage.style.display = 'block';
+    // ========== MODALS ==========
+    function initModals() {
+      // Special Message Modal
+      const openLetterBtn = document.getElementById('open-letter');
+      const messageModal = document.getElementById('message-modal');
+      const closeMessageBtn = document.getElementById('close-message');
+
+      openLetterBtn.addEventListener('click', () => {
+        messageModal.classList.add('active');
         shootConfetti();
-        // Change music to celebration tune
-        bgMusic.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3';
-        bgMusic.play();
-      } else {
-        alert("Please make a wish first!");
+      });
+
+      closeMessageBtn.addEventListener('click', () => {
+        messageModal.classList.remove('active');
+      });
+
+      // Cake Celebration Modal
+      const startCelebrationBtn = document.getElementById('start-celebration');
+      const cakeModal = document.getElementById('cake-modal');
+      const flame = document.getElementById('flame');
+      const smoke = document.getElementById('smoke');
+      const wishSection = document.getElementById('wish-section');
+      const finalMessage = document.getElementById('final-message');
+      const makeWishBtn = document.getElementById('make-wish');
+      const endCelebrationBtn = document.getElementById('end-celebration');
+      const wishInput = document.getElementById('wish-input');
+      const wishMessage = document.getElementById('wish-message');
+
+      startCelebrationBtn.addEventListener('click', () => {
+        cakeModal.classList.add('active');
+        shootConfetti();
+      });
+
+      // Candle blowing functionality
+      flame.addEventListener('click', () => {
+        // Blow out candle
+        flame.classList.add('blown-out');
+        smoke.classList.add('blow-smoke');
+        
+        // Play blowing sound
+        const blowSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-small-group-cheer-and-applause-518.mp3');
+        blowSound.play();
+        
+        // After candle is blown out, show wish section
+        setTimeout(() => {
+          wishSection.style.display = 'block';
+        }, 1000);
+      });
+
+      makeWishBtn.addEventListener('click', () => {
+        const wish = wishInput.value.trim();
+        if (wish !== '') {
+          // Store wish in localStorage
+          localStorage.setItem('awantikaBirthdayWish', wish);
+          
+          wishSection.style.display = 'none';
+          finalMessage.style.display = 'block';
+          
+          // Update wish message
+          wishMessage.innerHTML = `"${wish}"<br><br>May all your wishes come true!`;
+          
+          // Big celebration
+          shootConfetti();
+          createFireworks(10);
+          
+          // Change music to celebration tune
+          const bgMusic = document.getElementById('bg-music');
+          bgMusic.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3';
+          bgMusic.play();
+        } else {
+          alert("Please make a wish first!");
+        }
+      });
+
+      endCelebrationBtn.addEventListener('click', () => {
+        cakeModal.classList.remove('active');
+        // Reset for next time
+        wishSection.style.display = 'none';
+        finalMessage.style.display = 'none';
+        wishInput.value = '';
+        // Reset candle
+        flame.classList.remove('blown-out');
+        smoke.classList.remove('blow-smoke');
+      });
+
+      // Close modal when clicking outside content
+      window.addEventListener('click', (e) => {
+        if (e.target === messageModal) {
+          messageModal.classList.remove('active');
+        }
+        if (e.target === cakeModal) {
+          cakeModal.classList.remove('active');
+        }
+      });
+
+      // Check for previous wish
+      const savedWish = localStorage.getItem('awantikaBirthdayWish');
+      if (savedWish) {
+        wishMessage.innerHTML = `"${savedWish}"<br><br>May all your wishes come true!`;
       }
-    });
+    }
 
-    endCelebrationBtn.addEventListener('click', () => {
-      cakeSection.classList.remove('active');
-      // Reset for next time
-      cake.classList.remove('cake-cut');
-      cake.style.opacity = '1';
-      wishSection.style.display = 'none';
-      finalMessage.style.display = 'none';
-      document.getElementById('wish-input').value = '';
-    });
-
-    // Confetti Effect
+    // ========== CONFETTI EFFECT ==========
     function shootConfetti() {
       confetti({
         particleCount: 200,
         spread: 90,
         origin: { y: 0.6 },
-        colors: ['#ff0000', '#ffff00', '#00ff00', '#0000ff', '#ff00ff'],
-        shapes: ['circle', 'heart']
+        colors: ['#FF6B8B', '#FF8E53', '#FFD166', '#06D6A0', '#118AB2'],
+        shapes: ['circle', 'heart'],
+        scalar: 1.2
       });
+    }
+
+    // ========== FIREWORKS EFFECT ==========
+    function createFireworks(count) {
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          const firework = document.createElement('div');
+          firework.className = 'firework';
+          firework.style.left = `${Math.random() * 100}vw`;
+          firework.style.top = `${Math.random() * 100}vh`;
+          firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+          document.body.appendChild(firework);
+          
+          setTimeout(() => {
+            firework.remove();
+          }, 1000);
+        }, i * 300);
+      }
     }
 
     // Initial Confetti
     setTimeout(shootConfetti, 1000);
 
-    // Floating Hearts Background
-    function createFloatingHearts() {
-      const container = document.getElementById('floating-hearts');
-      const heartCount = 30;
-
-      for (let i = 0; i < heartCount; i++) {
-        const heart = document.createElement('div');
-        heart.innerHTML = '❤️';
-        heart.style.position = 'absolute';
-        heart.style.fontSize = `${Math.random() * 20 + 10}px`;
-        heart.style.left = `${Math.random() * 100}vw`;
-        heart.style.top = `${Math.random() * 100}vh`;
-        heart.style.opacity = Math.random() * 0.5 + 0.1;
-        heart.style.animation = `float ${Math.random() * 10 + 5}s linear infinite`;
-        heart.style.animationDelay = `${Math.random() * 5}s`;
-        container.appendChild(heart);
-      }
-
-      const style = document.createElement('style');
-      style.innerHTML = `
-        @keyframes float {
-          0% { transform: translateY(0) rotate(0deg); }
-          100% { transform: translateY(-100vh) rotate(360deg); }
-        }
-      `;
-      document.head.appendChild(style);
-    }
-
-    createFloatingHearts();
-
-    // Particles.js Background
-    particlesJS('particles-js', {
-      particles: {
-        number: { value: 100, density: { enable: true, value_area: 800 } },
-        color: { value: "#e94560" },
-        shape: { type: ["circle", "triangle", "star"] },
-        opacity: { value: 0.5, random: true },
-        size: { value: 3, random: true },
-        line_linked: { enable: true, distance: 150, color: "#ff6b6b", opacity: 0.4, width: 1 },
-        move: { enable: true, speed: 3, direction: "none", random: true, straight: false, out_mode: "out" }
-      },
-      interactivity: {
-        detect_on: "canvas",
-        events: {
-          onhover: { enable: true, mode: "repulse" },
-          onclick: { enable: true, mode: "push" }
-        }
-      }
-    });
-
     // Shoot confetti when clicking anywhere
     document.addEventListener('click', function(e) {
-      if (e.target.className !== 'btn' && e.target.id !== 'cake') {
+      if (!e.target.classList.contains('btn') && e.target.id !== 'flame') {
         shootConfetti();
       }
     });
