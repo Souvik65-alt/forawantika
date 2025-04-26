@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Birthday Awantika 💝</title>
+  <title>Happy Birthday Awantika 💖</title>
   <!-- Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -161,8 +161,8 @@
       color: #ff6b6b;
     }
 
-    /* Love Letter Popup */
-    .letter-popup {
+    /* Cake Cutting Section */
+    .cake-section {
       position: fixed;
       top: 0;
       left: 0;
@@ -170,36 +170,88 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.9);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 2000;
       opacity: 0;
       pointer-events: none;
       transition: all 0.5s ease;
     }
 
-    .letter-popup.active {
+    .cake-section.active {
       opacity: 1;
       pointer-events: all;
     }
 
-    .letter-content {
-      background: linear-gradient(135deg, #1a1a2e, #16213e);
-      padding: 40px;
-      border-radius: 20px;
-      max-width: 600px;
+    .cake-container {
       position: relative;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 105, 180, 0.3);
+      width: 300px;
+      height: 300px;
+      margin-bottom: 30px;
     }
 
-    .close-letter {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 1.5rem;
+    .cake {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
       cursor: pointer;
-      color: #ff6b6b;
+      transition: transform 0.3s ease;
+    }
+
+    .cake:hover {
+      transform: scale(1.05);
+    }
+
+    .knife {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.5s ease;
+    }
+
+    .cake-cut .knife {
+      opacity: 1;
+      animation: cutAnimation 1s forwards;
+    }
+
+    @keyframes cutAnimation {
+      0% { transform: translate(-50%, -50%) rotate(-45deg); }
+      100% { transform: translate(-50%, -50%) rotate(45deg); }
+    }
+
+    .wish-section {
+      display: none;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .wish-input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 10px;
+      border: 2px solid #ff6b6b;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      outline: none;
+    }
+
+    .final-message {
+      display: none;
+      animation: fadeIn 2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     /* Responsive */
@@ -207,6 +259,7 @@
       h1 { font-size: 2.2rem; }
       .cursive { font-size: 2rem; }
       .slide img { max-width: 280px; }
+      .cake-container { width: 250px; height: 250px; }
     }
   </style>
 </head>
@@ -266,16 +319,29 @@
 
   <div class="slide" data-aos="zoom-out">
     <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Awantika">
-    <h1>Happy Birthday <span class="cursive">Beautiful</span></h1>
-    <p>May your day be as amazing as you make my life every day. 🎉💖</p>
+    <h1>Let's Celebrate! <span class="cursive">Cut the Cake</span></h1>
+    <p>Click the button below to begin your birthday celebration!</p>
+    <button class="btn" id="start-celebration">Cut the Cake 🎂</button>
   </div>
 
-  <!-- Love Letter Popup -->
-  <div class="letter-popup" id="letter-popup">
-    <div class="letter-content">
-      <span class="close-letter" id="close-letter">&times;</span>
-      <h2 class="cursive" style="margin-bottom: 20px;">My Dearest Awantika,</h2>
-      <p id="typewriter-text" style="text-align: left; font-size: 1.1rem; line-height: 1.8;"></p>
+  <!-- Cake Cutting Section -->
+  <div class="cake-section" id="cake-section">
+    <div class="cake-container">
+      <img src="https://i.imgur.com/JWZQX9O.png" alt="Birthday Cake" class="cake" id="cake">
+      <img src="https://i.imgur.com/5XQZQ9L.png" alt="Knife" class="knife">
+    </div>
+    
+    <div class="wish-section" id="wish-section">
+      <h2 class="cursive">Make a Wish!</h2>
+      <p>Type your birthday wish below and it will come true!</p>
+      <input type="text" class="wish-input" id="wish-input" placeholder="Your birthday wish...">
+      <button class="btn" id="make-wish">Make a Wish ✨</button>
+    </div>
+    
+    <div class="final-message" id="final-message">
+      <h2 class="cursive">Happy Birthday Awantika!</h2>
+      <p>"May your life be as beautiful as your smile, as bright as your eyes, and as wonderful as you are."</p>
+      <button class="btn" id="end-celebration">Close Celebration</button>
     </div>
   </div>
 
@@ -318,79 +384,60 @@
       }
     });
 
-    // Love Letter Popup
-    const openLetterBtn = document.getElementById('open-letter');
-    const letterPopup = document.getElementById('letter-popup');
-    const closeLetterBtn = document.getElementById('close-letter');
-    const typewriterText = document.getElementById('typewriter-text');
+    // Cake Cutting Celebration
+    const startCelebrationBtn = document.getElementById('start-celebration');
+    const cakeSection = document.getElementById('cake-section');
+    const cake = document.getElementById('cake');
+    const wishSection = document.getElementById('wish-section');
+    const finalMessage = document.getElementById('final-message');
+    const makeWishBtn = document.getElementById('make-wish');
+    const endCelebrationBtn = document.getElementById('end-celebration');
 
-    openLetterBtn.addEventListener('click', () => {
-      letterPopup.classList.add('active');
-      startTypewriter();
+    startCelebrationBtn.addEventListener('click', () => {
+      cakeSection.classList.add('active');
+      shootConfetti();
     });
 
-    closeLetterBtn.addEventListener('click', () => {
-      letterPopup.classList.remove('active');
+    cake.addEventListener('click', () => {
+      cake.classList.add('cake-cut');
+      setTimeout(() => {
+        cake.style.opacity = '0';
+        wishSection.style.display = 'block';
+      }, 1000);
     });
 
-    // Typewriter Effect for Love Letter
-    const loveLetter = [
-      "Dear Awantika,",
-      "",
-      "On your special day, I want you to know that you're the most amazing person I've ever met.",
-      "Your smile brightens my darkest days, and your love is the most beautiful algorithm in my life's code.",
-      "",
-      "I promise to always be your debugger, your support system, and your biggest fan.",
-      "No matter what errors life throws at us, we'll solve them together.",
-      "",
-      "Happy Birthday to the woman who makes my heart compile without any warnings or errors.",
-      "",
-      "Forever yours,",
-      "❤️"
-    ];
-
-    let lineIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let isWaiting = false;
-
-    function startTypewriter() {
-      typewriterText.innerHTML = '';
-      lineIndex = 0;
-      charIndex = 0;
-      typeNextLine();
-    }
-
-    function typeNextLine() {
-      if (lineIndex >= loveLetter.length) return;
-
-      const currentLine = loveLetter[lineIndex];
-      
-      if (charIndex < currentLine.length && !isDeleting && !isWaiting) {
-        typewriterText.innerHTML += currentLine.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeNextLine, 30);
-      } else if (charIndex === currentLine.length && !isWaiting) {
-        isWaiting = true;
-        setTimeout(() => {
-          isWaiting = false;
-          if (lineIndex < loveLetter.length - 1) {
-            typewriterText.innerHTML += '<br><br>';
-          }
-          lineIndex++;
-          charIndex = 0;
-          typeNextLine();
-        }, 1000);
+    makeWishBtn.addEventListener('click', () => {
+      const wish = document.getElementById('wish-input').value;
+      if (wish.trim() !== '') {
+        wishSection.style.display = 'none';
+        finalMessage.style.display = 'block';
+        shootConfetti();
+        // Change music to celebration tune
+        bgMusic.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3';
+        bgMusic.play();
+      } else {
+        alert("Please make a wish first!");
       }
-    }
+    });
+
+    endCelebrationBtn.addEventListener('click', () => {
+      cakeSection.classList.remove('active');
+      // Reset for next time
+      cake.classList.remove('cake-cut');
+      cake.style.opacity = '1';
+      wishSection.style.display = 'none';
+      finalMessage.style.display = 'none';
+      document.getElementById('wish-input').value = '';
+    });
 
     // Confetti Effect
     function shootConfetti() {
       confetti({
-        particleCount: 150,
-        spread: 70,
+        particleCount: 200,
+        spread: 90,
         origin: { y: 0.6 },
-        colors: ['#ff0000', '#ffff00', '#00ff00', '#0000ff', '#ff00ff']
+        colors: ['#ff0000', '#ffff00', '#00ff00', '#0000ff', '#ff00ff'],
+        shapes: ['circle', 'heart']
       });
     }
 
@@ -400,7 +447,7 @@
     // Floating Hearts Background
     function createFloatingHearts() {
       const container = document.getElementById('floating-hearts');
-      const heartCount = 20;
+      const heartCount = 30;
 
       for (let i = 0; i < heartCount; i++) {
         const heart = document.createElement('div');
@@ -430,13 +477,13 @@
     // Particles.js Background
     particlesJS('particles-js', {
       particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
+        number: { value: 100, density: { enable: true, value_area: 800 } },
         color: { value: "#e94560" },
-        shape: { type: "circle" },
+        shape: { type: ["circle", "triangle", "star"] },
         opacity: { value: 0.5, random: true },
         size: { value: 3, random: true },
         line_linked: { enable: true, distance: 150, color: "#ff6b6b", opacity: 0.4, width: 1 },
-        move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+        move: { enable: true, speed: 3, direction: "none", random: true, straight: false, out_mode: "out" }
       },
       interactivity: {
         detect_on: "canvas",
@@ -448,8 +495,10 @@
     });
 
     // Shoot confetti when clicking anywhere
-    document.addEventListener('click', function() {
-      shootConfetti();
+    document.addEventListener('click', function(e) {
+      if (e.target.className !== 'btn' && e.target.id !== 'cake') {
+        shootConfetti();
+      }
     });
   </script>
 </body>
